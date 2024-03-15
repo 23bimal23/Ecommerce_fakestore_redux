@@ -16,14 +16,12 @@ This project showcases an Ecommerce application built using React.js, TypeScript
 - **Pagination:** Implemented pagination for efficiently navigating through large lists of products.
 
 ## Demo Pictures
-![Login Page](
+
 ![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/42bcf013-97b2-4c8b-8101-317098a397cc)
 
-)
-![Store Page with filters]
+
 ![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/49685b4a-b699-42d5-adca-50af57c24ebe)
 
-![Cart Page]
 ![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/5caff1ab-b8d9-4b20-a77f-9a91324c286b)
 
 
