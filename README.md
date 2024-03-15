@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# React JS Ecommerce Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project showcases an Ecommerce application built using React.js, TypeScript for type safety, MUI (Material-UI) for UI components, and Tailwind CSS for styling. It incorporates several key features and technologies to provide a seamless shopping experience:
 
-Currently, two official plugins are available:
+## Key Features
+- **Type Safety:** Implemented TypeScript to ensure type safety throughout the codebase.
+- **UI Library:** Utilized MUI (Material-UI) for building consistent and responsive UI components.
+- **Styling:** CSS was written using Tailwind CSS, offering a streamlined and efficient styling approach.
+- **Lazy Loading:** Implemented lazy loading for optimized performance, ensuring resources are loaded only when needed.
+- **Private Routes:** Utilized private routes to restrict access to authenticated users only, enhancing security.
+- **Fallback Route:** Implemented a fallback route to handle 404 errors or other navigation issues gracefully.
+- **Global State Management:** Utilized Redux Toolkit for managing global state, particularly for the shopping cart functionality.
+- **Persistent State:** Stored state in Redux using Redux Persist, ensuring that data persists even after page refreshes.
+- **Search Functionality:** Implemented a search feature to allow users to easily find products based on keywords.
+- **Category Filters:** Added filters to categorize products, making it easier for users to browse specific types of items.
+- **Pagination:** Implemented pagination for efficiently navigating through large lists of products.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Demo Pictures
+![Login Page](
+![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/42bcf013-97b2-4c8b-8101-317098a397cc)
 
-## Expanding the ESLint configuration
+)
+![Store Page with filters]
+![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/49685b4a-b699-42d5-adca-50af57c24ebe)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![Cart Page]
+![image](https://github.com/23bimal23/Ecommerce_fakestore_redux/assets/118372992/5caff1ab-b8d9-4b20-a77f-9a91324c286b)
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+This e-commerce demo project showcases the use of modern technologies and best practices to create a robust and user-friendly shopping experience.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
