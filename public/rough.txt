@@ -1,0 +1,210 @@
+import { Card } from "flowbite-react";
+import RatingStars from "./RatingStars";
+import { formatCurrency } from "../utilities/FormatCurrency";
+import type { RootState } from "../store/Store";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  increaseCartQuantity,
+  decreaseCartQuantity,
+  removeCartQuantity,
+} from "../store/feature/cart/CartSlice";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+export type ProductTypes = {
+  id: number;
+  title: string;
+  image: string;
+  price: number;
+  description: string;
+  categories: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+};
+type propsType ={
+  products:ProductTypes[]
+}
+
+const ProductCard = ({ products }:propsType) => {
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
+  const getQuantity = (id: number) => {
+    const productInCart = cartItems.find((item) => item.id === id);
+    return productInCart ? productInCart.quantity : 0;
+  };
+  const dispatch = useDispatch();
+
+  const handleIncrease = () => {
+    dispatch(increaseCartQuantity({ id, price, title, image }));
+  };
+
+  const handleDecrease = () => {
+    dispatch(decreaseCartQuantity({ id, price, title, image }));
+  };
+
+  const handleRemove = () => {
+    dispatch(removeCartQuantity({ id, price, title, image }));
+  };
+
+  const renderAddToCartButton = () => (
+    <button
+      onClick={handleIncrease}
+      className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+    >
+      Add to Cart
+    </button>
+  );
+
+  const renderQuantityControls = () => (
+    <div className="flex flex-col gap-1 items-center">
+      <div className="flex gap-2">
+        <button
+          onClick={handleDecrease}
+          className="rounded-lg bg-cyan-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+        >
+          -
+        </button>
+        <span className="quantity-display">
+          <span className="text-red-900 text-2xl">{getQuantity(id)}</span> in
+          cart
+        </span>
+        <button
+          onClick={handleIncrease}
+          className="rounded-lg bg-cyan-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+        >
+          +
+        </button>
+      </div>
+      <button
+        onClick={handleRemove}
+        className="rounded-lg bg-red-700 px-2 py-1.5 text-center text-xs font-medium text-white w-fit"
+      >
+        Remove
+      </button>
+    </div>
+  );
+  const [items, setItems] = useState(products.slice(0, 20));
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const productsPerPage = 4;
+  const pagesVisited = pageNumber * productsPerPage;
+  const displayProducts = items
+    .slice(pagesVisited, pagesVisited + productsPerPage)
+    .map((item) => {return(
+      <Card
+        className="max-w-sm px-4 "
+        key={item.id}
+        imgAlt={item.title}
+        imgSrc={item.image}
+      >
+        <Link to={`/store/${item.id}`}>
+          <h5 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
+            {item.title}
+          </h5>
+        </Link>
+
+        <div className="mb-5 mt-2.5 flex items-center ">
+          <RatingStars {...item.rating} />
+          <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
+            ({item.rating.count})&nbsp;ratings
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-bold text-red-700 dark:text-white">
+            {formatCurrency(item.price)}
+          </span>
+          {getQuantity(item.id) > 0
+            ? renderQuantityControls()
+            : renderAddToCartButton()}
+        </div>
+      </Card>)
+    });
+  const pageCount = Math.ceil(items.length / productsPerPage);
+  const handleChange = (event, value:number) => {
+    setPageNumber(value);
+  };
+
+  return (
+    <div>
+      <div>{displayProducts}</div>
+      <Stack spacing={10}>
+        <Pagination
+          count={pageCount}
+          onChange={handleChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      </Stack>
+    </div>
+  );
+};
+
+export default ProductCard;
+import ProductCard from "../components/ProductCard";
+import useFetch from "../useFetch";
+import { ProductTypes } from "../components/ProductCard";
+import reactLogo from "../assets/react.svg";
+import { useState } from "react";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+const Store = () => {
+  const { data, isPending, error } = useFetch(
+    "https://fakestoreapi.com/products/"
+  );
+  console.log(data, isPending, error);
+  const products: ProductTypes[] = data;
+  const [items, setItems] = useState(products.slice(0, 20));
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const productsPerPage = 4;
+  const pagesVisited = pageNumber * productsPerPage;
+  const displayProducts = items
+    .slice(pagesVisited, pagesVisited + productsPerPage)
+    .map((item) => {
+      return <ProductCard key={item.id} item={item} />;
+    });
+
+  const pageCount = Math.ceil(items.length / productsPerPage);
+  const handleChange = (event, value: number) => {
+    setPageNumber(value);
+  };
+
+  return (
+    <div className="flex items-center">
+      {error && <div>{error}</div>}
+      {isPending && (
+        <div className="flex items-center justify-items-center">
+          <img src={reactLogo} alt="" className="logo" />
+        </div>
+      )}
+      
+      <div className="grid grid-cols-3 md:grid-cols-1 gap-5 " style={{ width: "1200px" }}>
+        {products && displayProducts}
+        <Stack spacing={10}>
+          <Pagination
+            count={pageCount}
+            onChange={handleChange}
+            variant="outlined"
+            shape="rounded"
+          />
+        </Stack>
+      </div>
+    </div>
+  );
+};
+
+export default Store;
+   <div className="flex  justify-items-end text-2xl text-green-700 italic">
+                Total&nbsp;&nbsp;
+                {formatCurrency(
+                  cartItems.reduce((total, cartItem) => {
+                    const item = data?.find((i) => i.id === cartItem.id);
+                    return total + (item?.price || 0) * cartItem.quantity;
+                  }, 0)
+                )}
+              </div>
+          <NullCart />
